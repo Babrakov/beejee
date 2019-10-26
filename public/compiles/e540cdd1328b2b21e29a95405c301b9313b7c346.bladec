@@ -1,0 +1,84 @@
+<?php $_shouldextend[1]=1; ?>
+
+<?php $this->startSection('content'); ?>
+<p><a href="/tasks/create" class="btn btn-success">Добавить</a></p>
+<?php if($message): ?>
+ <div class="alert alert-success">
+ <ul>
+ <li class="error"><?php echo $message; ?></li>
+ </ul>
+ </div>
+<?php endif; ?>
+<?php if($tasks->count()): ?>
+ <div class="portlet box green">
+ <div class="portlet-title">
+ <div class="caption">Список задач</div>
+ </div>
+ 
+ <div class="portlet-body">
+ <table class="table table-striped table-hover table-responsive datatable" id="hometable">
+ <thead>
+ <tr>                        
+ <th>Пользователь</th>
+ <th>Email</th>
+ <th>Текст задачи</th>
+ <th width='1%'>Статус</th>
+ <th width='1%'>Ред.</th>
+ <?php if(isset($_SESSION['admin'])): ?>
+ <th width='1%'></th>
+ <?php endif; ?>
+ </tr>
+ </thead>
+
+ <tbody>
+ <?php $__currentLoopData = $tasks; $this->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $this->incrementLoopIndices(); $loop = $this->getFirstLoop(); ?>
+ <tr>
+ <td><?php echo static::e($task->user); ?></td>
+ <td><?php echo static::e($task->email); ?></td>                            
+ <td><?php echo static::e($task->task); ?></td>                            
+ <td><?php echo static::e($task->ready ? 'Выполнена' : ''); ?></td>                            
+ <td><?php echo static::e($task->edit ? 'Отред.админ.' : ''); ?></td> 
+ <?php if(isset($_SESSION['admin'])): ?>
+ <td style='float:right;'><a href="/tasks/edit?id=<?php echo static::e($task->id); ?>"  class="btn btn-primary">Редактировать</a></td>
+ <?php endif; ?>
+ </tr>
+ <?php endforeach; $this->popLoop(); $loop = $this->getFirstLoop(); ?>
+ </tbody>
+ </table>
+ </div>
+ </div>
+<?php else: ?>
+ Задач нет
+<?php endif; ?>
+
+<?php $this->stopSection(); ?>
+
+<?php $this->startSection('javascript'); ?>
+ <script>
+ $(document).ready(function () {
+ 
+<?php if(isset($_SESSION['admin'])): ?>            
+ var cols = [3,4,5];
+<?php else: ?>
+ var cols = [3,4];    
+<?php endif; ?>
+ 
+ $('#hometable').DataTable({
+ "language": {
+ "url": "/js/Russian.json"
+ },
+ "bStateSave": true,
+ "bFilter": false,
+ "bLengthChange": false,
+ "iDisplayLength": 3,
+ "aaSorting": [[0, 'asc']],
+ "aoColumnDefs": [
+ {'bSortable': false, 'aTargets': cols}
+ ],
+ });    
+ 
+ });
+ 
+ </script>
+<?php $this->stopSection(); ?>
+<?php if (@$_shouldextend[1]) { echo $this->runChild('layouts.master'); } ?>

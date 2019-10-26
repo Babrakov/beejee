@@ -1,0 +1,12 @@
+{
+    "require": {
+        "illuminate/database": "^6.3",
+        "eftec/bladeone": "^3.31"
+    },
+    "autoload": {
+        "psr-4": {
+             "Core\\": "Core/",
+             "App\\": "App/"
+        }
+    }
+}

@@ -1,0 +1,55 @@
+<?php $_shouldextend[1]=1; ?>
+
+<?php $this->startSection('content'); ?>
+<p><a href="/tasks/create" class="btn btn-success">Добавить</a></p>
+<?php if($tasks->count()): ?>
+ <div class="portlet box green">
+ <div class="portlet-title">
+ <div class="caption">Список</div>
+ </div>
+ <div class="portlet-body">
+ <table class="table table-striped table-hover table-responsive datatable" id="hometable">
+ <thead>
+ <tr>                        
+ <th>Населенный пункт</th>
+ <th>Район</th>
+ </tr>
+ </thead>
+
+ <tbody>
+ <?php $__currentLoopData = $tasks; $this->addLoop($__currentLoopData); foreach($__currentLoopData as $task): $this->incrementLoopIndices(); $loop = $this->getFirstLoop(); ?>
+ <tr>
+ <td><?php echo static::e($task->user); ?></td>
+ <td><?php echo static::e($task->email); ?></td>                            
+ </tr>
+ <?php endforeach; $this->popLoop(); $loop = $this->getFirstLoop(); ?>
+ </tbody>
+ </table>
+ </div>
+ </div>
+<?php else: ?>
+ {--<?php echo static::e(trans('templates.templates-view_index-no_entries_found')); ?>--}}
+<?php endif; ?>
+
+<?php $this->stopSection(); ?>
+
+<?php $this->startSection('javascript'); ?>
+ <script>
+ $(document).ready(function () {
+ $('#hometable').DataTable({
+ "language": {
+//                    "url": "/js/Russian.json"
+ },
+//                bInfo: false,
+ "bFilter": false,
+ "bLengthChange": false,
+ "iDisplayLength": 3,
+ "aaSorting": [[0, 'asc']],
+ });
+ 
+ 
+ });
+ 
+ </script>
+<?php $this->stopSection(); ?>
+<?php if (@$_shouldextend[1]) { echo $this->runChild('layouts.master'); } ?>
