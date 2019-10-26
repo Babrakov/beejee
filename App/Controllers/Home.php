@@ -34,7 +34,7 @@ class Home extends \Core\Controller
         $login = filter_input(INPUT_POST, 'login');
         $pass = filter_input(INPUT_POST, 'pass');
         
-        if ($login==='admin' && $pass==='123') {
+        if ($login===Config::ADMIN && $pass===Config::PASSW) {
             $_SESSION['admin']='admin';
             header('Location: /tasks');
         } else {
